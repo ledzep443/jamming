@@ -2,15 +2,69 @@ import './App.css';
 import Playlist from '../Playlist/Playlist.js';
 import Searchbar from '../SearchBar/SearchBar.js';
 import SearchResults from '../SearchResults/SearchResults.js';
-import { render } from '@testing-library/react';
 import React from 'react';
-import ReactDOM from 'react-dom';
+
 
 class App extends React.Component {
     constructor(props) {
         super(props);
-        this.state.SearchResults = []
+        this.state = {
+            searchResults: [{
+                id: 1,
+                name: "Highway to Hell",
+                artist: "ACDC",
+                album: "Highway to Hell"
+            },{
+                id: 2,
+                name: "name2",
+                artist: "artist2",
+                album: "album2"
+            },{
+                id: 3,
+                name: "name3",
+                artist: "artist3",
+                album: "album3"
+            }],
+            playlistName: 'Playlist',
+            playlistTracks: [{id: 4,
+                name: "Highway to Hell",
+                artist: "ACDC",
+                album: "Highway to Hell"
+            },{
+                id: 5,
+                name: "name2",
+                artist: "artist2",
+                album: "album2"
+            },{
+                id: 6,
+                name: "name3",
+                artist: "artist3",
+                album: "album3"}],
     }
+    this.addTrack = this.addTrack.bind(this);
+    this.removeTrack = this.removeTrack.bind(this);
+    this.updatePlaylistName = this.updatePlaylistName(this);
+}
+    addTrack(track) {
+        let tracks = this.state.playlistTracks;
+        if (tracks.find(savedTrack => savedTrack.id === track.id)) {
+      return;
+    }
+    tracks.push(track);
+    this.setState({ playlistTracks: tracks });
+    }
+    removeTrack(track) {
+        let tracks = this.state.playlistTracks.filter(currentTrack => currentTrack.id !== track.id);
+
+        this.setState({ playlistTracks: tracks });
+  }
+  updatePlaylistName(name) {
+    this.setState({ playlistName: name });
+  }
+  savePlaylist() {
+
+  }
+
     render() {
         return ( 
         <div>
@@ -18,13 +72,18 @@ class App extends React.Component {
             <div class = "App" >
                 <Searchbar />
                 <div className = "App-playlist" >
-                    <SearchResults />
-                    <Playlist />
+                <SearchResults searchResults={this.state.searchResults} 
+                               onAdd={this.addTrack}/>
+                <Playlist playlistName={this.state.playlistName} 
+                          playlistTracks={this.state.playlistTracks}
+                          onRemove={this.removeTrack}
+                          onNameChange={this.updatePlaylistName}
+                          onSave={this.savePlaylist}/>
                 </div>   
             </div >  
         </div >
         );
     }
-}
+};
 
 export default App;
