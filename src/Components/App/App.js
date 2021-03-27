@@ -1,4 +1,7 @@
 import './App.css';
+import Playlist from 'src/Components/Playlist/Playlist.js';
+import Searchbar from 'src/Components/SearchBar/SearchBar.js';
+import SearchResults from 'src/Components/SearchResults/SearchResults.js';
 
 function App() {
     return ( <
