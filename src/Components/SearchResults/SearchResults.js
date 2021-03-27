@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+
 import TrackList from '../TrackList/TrackList.js';
 import './SearchResults.css';
 
