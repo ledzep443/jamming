@@ -2,6 +2,7 @@ import './App.css';
 import Playlist from '../Playlist/Playlist.js';
 import Searchbar from '../SearchBar/SearchBar.js';
 import SearchResults from '../SearchResults/SearchResults.js';
+import Spotify from '../../util/Spotify.js'
 import React from 'react';
 
 
@@ -47,12 +48,9 @@ class App extends React.Component {
 }
     addTrack(track) {
         let tracks = this.state.playlistTracks;
-        if (tracks.find(savedTrack => savedTrack.id === track.id)) {
-      return;
-    }
-    tracks.push(track);
-    this.setState({ playlistTracks: tracks });
-    }
+        tracks.push(track);
+        this.setState({ playlistTracks: tracks });
+  }
     removeTrack(track) {
         let tracks = this.state.playlistTracks.filter(currentTrack => currentTrack.id !== track.id);
 
@@ -62,7 +60,13 @@ class App extends React.Component {
     this.setState({ playlistName: name });
   }
   savePlaylist() {
-
+    const trackURIs = this.state.playlistTracks.map(track => track.uri);
+    Spotify.savePlaylist(this.state.playlistName, trackURIs).then(() => {
+      this.setState({
+        playlistName: 'New Playlist',
+        playlistTracks: []
+      });
+    });
   }
 
     render() {
@@ -73,7 +77,7 @@ class App extends React.Component {
                 <Searchbar />
                 <div className = "App-playlist" >
                 <SearchResults searchResults={this.state.searchResults} 
-                               onAdd={this.addTrack}/>
+                               onAdd={this.addTrack()}/>
                 <Playlist playlistName={this.state.playlistName} 
                           playlistTracks={this.state.playlistTracks}
                           onRemove={this.removeTrack}
