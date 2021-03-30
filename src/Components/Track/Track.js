@@ -15,7 +15,7 @@ class Track extends React.Component {
         this.renderPreviewIcon = this.renderPreviewIcon.bind(this);
     }
     // Adds this.props.track as an argument to the addTrack method in App.js
-    addTrack() {
+    addTrack(track) {
         this.props.onAdd(this.props.track);
     }
 
@@ -27,12 +27,12 @@ class Track extends React.Component {
     // Renders either a + or a - link to add or remove tracks from playlist.
     renderAction() {
         if (this.props.isRemoval) {
-            return <i   className="Track-action fa fa-minus-circle" 
-                        onClick={this.removeTrack}></i>
-        }
-        return <i   className="Track-action fa fa-plus-circle" 
-                    onClick={this.addTrack}></i>
-    }
+            return <button   className="Track-action fa fa-minus-circle" 
+                        onClick={this.removeTrack}>-</button>
+        } else {
+        return <button   className="Track-action fa fa-plus-circle" 
+                    onClick={this.addTrack}>+</button>
+    }}
 
     togglePlayPreview() {
         const audio = this.refs.audio;
